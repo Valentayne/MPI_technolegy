@@ -1,0 +1,9 @@
+#cloud-config
+package_update: true
+packages:
+  - openmpi-bin
+  - libopenmpi-dev
+  - python3-mpi4py
+  - nfs-kernel-server
+  - nfs-common
+  - build-essential
