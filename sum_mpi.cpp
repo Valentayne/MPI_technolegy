@@ -39,14 +39,16 @@ int main(int argc, char** argv)
     // =========================
     // MPI
     // =========================
-
+    double start = 0.0;
+    double mpiTime = 0.0;
     std::vector<long long> localPart(counts[rank]);
     MPI_Scatterv(array.data(), counts.data(), displs.data(), MPI_LONG_LONG,
         localPart.data(), counts[rank], MPI_LONG_LONG,
         0, MPI_COMM_WORLD);
+    if (rank == 0) {
 
-    MPI_Barrier(MPI_COMM_WORLD);
-    double start = MPI_Wtime();
+     start = MPI_Wtime();
+    }
 
     long long localSum = 0;
     for (std::size_t i = 0; i < localPart.size(); i++)
@@ -54,9 +56,9 @@ int main(int argc, char** argv)
         localSum += localPart[i];
     }
 
-    MPI_Barrier(MPI_COMM_WORLD);
-    double mpiTime = (MPI_Wtime() - start) * 1000.0;
-
+    if (rank == 0) {
+        mpiTime = (MPI_Wtime() - start) * 1000.0;
+    }
     long long mpiTotal = 0;
     MPI_Reduce(&localSum, &mpiTotal, 1, MPI_LONG_LONG, MPI_SUM, 0, MPI_COMM_WORLD);
 

@@ -56,7 +56,7 @@ void Controller(int workers)
         MPI_Send(range, 2, MPI_INT, w, 0, MPI_COMM_WORLD);
     }
 
-    MPI_Barrier(MPI_COMM_WORLD);  
+    MPI_Barrier(MPI_COMM_WORLD);
     double start = MPI_Wtime();
 
     std::vector<int> sums(workers);
